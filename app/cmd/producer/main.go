@@ -10,17 +10,19 @@ import (
 func main() {
 	deliveryChan := make(chan kafka.Event)
 	producer := NewKafkaProducer()
-	Publish("transferiu", "teste", producer, []byte("transferecia2"), deliveryChan)
-	DeliveryReport(deliveryChan) // async
+	Publish("transferiu", "teste", producer, []byte(""), deliveryChan)
+	// DeliveryReport(deliveryChan) // async
 
-	//e := <-deliveryChan
-	//msg := e.(*kafka.Message)
-	//if msg.TopicPartition.Error != nil {
-	//	fmt.Println("Erro ao enviar")
-	//} else {
-	//	fmt.Println("Mensagem enviada:", msg.TopicPartition)
-	//}
-	//
+	e := <-deliveryChan
+	msg := e.(*kafka.Message)
+	if msg.TopicPartition.Error != nil {
+		fmt.Println("Erro ao enviar")
+	} else {
+		fmt.Println("Mensagem enviada: ", "Headers=", msg.Headers,
+			" Key=", msg.Key,
+			" Topic[Partition]@Offset=", msg.TopicPartition)
+	}
+	producer.Flush(10000)
 
 }
 
