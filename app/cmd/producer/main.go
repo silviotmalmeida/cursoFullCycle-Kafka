@@ -33,6 +33,7 @@ func main() {
 	} else {
 		fmt.Println("Mensagem publicada: ", "Headers=", msg.Headers,
 			" Key=", msg.Key,
+			" Value=", string(msg.Value),
 			" Topic[Partition]@Offset=", msg.TopicPartition)
 	}
 	// esperando o retorno da publicação
